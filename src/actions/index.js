@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { ADD_RECIPES, INCREMENT_LOVE, DECREMENT_LOVE, UPDATE_RECIPES_PAGE, RESET_AND_ADD_RECIPES } from './../reducers/recipes'
-import { ADD_COMMENTS } from './../reducers/comments'
+import { ADD_COMMENTS, ADD_COMMENT } from './../reducers/comments'
 import { SET_LOGGED_IN_USER, LOG_OUT } from './../reducers/accounts'
-import { push } from 'react-router-redux'
+import { goBack } from 'react-router-redux'
 
 const req = axios.create({
   baseURL: 'http://resepku.eezhal92.com/api'
@@ -97,6 +97,14 @@ export function addComments(recipeId, comments) {
   }
 }
 
+export function addComment(recipeId, comment) {
+  return {
+    type: ADD_COMMENT,
+    recipeId,
+    comment
+  }
+}
+
 export function fetchComments(recipeId) {
   return dispatch => {
     return req.get(`/v1/recipes/${recipeId}/comments`).then(response => {
@@ -134,7 +142,7 @@ export function loginUser(params) {
         let user = response.data
         localStorage.setItem('auth_token', token)
         dispatch(setLoggedInUser(user, token))
-        dispatch(push('/'))
+        dispatch(goBack())
       })
     }).catch(e => {
       alert('error')
@@ -166,6 +174,21 @@ export function toggleLove(recipeId) {
   return () => {
     return req.post(`/v1/recipes/${recipeId}/love`).then(response => {
       console.log(response, 'love success')
+    })
+  }
+}
+
+export function postComment(recipeId, title, body) {
+  let token = localStorage.getItem('auth_token')
+  req.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+  return dispatch => {
+    return req.post(`/v1/recipes/${recipeId}/comments`, {
+      title,
+      body
+    }).then(response => {
+      console.log(response.data, 'post comment')
+      dispatch(addComment(recipeId, response.data))
     })
   }
 }

@@ -24,7 +24,7 @@ class Single extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.fetchRecipeAndComments(nextProps.params.id)
+    // this.fetchRecipeAndComments(nextProps.params.id)
   }
 
   render() {

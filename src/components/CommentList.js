@@ -25,6 +25,7 @@ class CommentList extends React.Component {
                 </div>
               </div>
               <div class="txt-content">
+                {item.title ? <p><b>{item.title}</b></p> : ''}
                 <p>{item.body}</p>
               </div>
               <hr />
