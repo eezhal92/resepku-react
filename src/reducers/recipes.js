@@ -21,7 +21,7 @@ function recipes(state = recipesInitialState, action) {
     case 'RECIPES_FETCHING_FULFILLED':
       return { ...state, fetched: true, fetching: false, error: false }
     case 'RECIPES_FETCHING_REJECTED':
-      return { ...state, error: true }
+      return { ...state, error: true, fetching: false }
     case 'SELECT_RECIPE':
       return { ...state, selectedRecipe: action.recipe }
     case ADD_RECIPES:

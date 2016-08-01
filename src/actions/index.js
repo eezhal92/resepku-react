@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ADD_RECIPES, INCREMENT_LOVE, DECREMENT_LOVE, UPDATE_RECIPES_PAGE, RESET_AND_ADD_RECIPES } from './../reducers/recipes'
 import { ADD_COMMENTS } from './../reducers/comments'
-import { SET_LOGGED_IN_USER } from './../reducers/accounts'
+import { SET_LOGGED_IN_USER, LOG_OUT } from './../reducers/accounts'
 import { push } from 'react-router-redux'
 
 const req = axios.create({
@@ -75,7 +75,10 @@ export function fetchRecipes(params) {
       }
 
       dispatch(updateRecipePage(response.data.current_page, response.data.last_page))
-    }).catch(() => dispatch({ type: 'RECIPES_FETCHING_REJECTED'}))
+    }).catch(err => {
+      console.info('error cathed', ''+err)
+      dispatch({ type: 'RECIPES_FETCHING_REJECTED', error: err})
+    })
   }
 }
 
@@ -139,6 +142,13 @@ export function loginUser(params) {
   }
 }
 
+export function logoutUser() {
+  localStorage.removeItem('auth_token')
+  return {
+    type: LOG_OUT
+  }
+}
+
 export function redirect(path) {
   return dispatch => {
     dispatch(push(path))
@@ -147,4 +157,15 @@ export function redirect(path) {
 
 export function checkTokenInStorage() {
   alert('cheking token...')
+}
+
+export function toggleLove(recipeId) {
+  let token = localStorage.getItem('auth_token')
+  req.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+  return () => {
+    return req.post(`/v1/recipes/${recipeId}/love`).then(response => {
+      console.log(response, 'love success')
+    })
+  }
 }

@@ -8,7 +8,7 @@ import { fetchRecipes } from './../actions'
 import GeneralLayout from './layouts/GeneralLayout'
 
 class Home extends React.Component {
-  componentDidMount() {
+  componentWillMount() {
     if (! this.props.fetched) {
       this.props.fetchRecipes()
     }

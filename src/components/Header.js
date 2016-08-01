@@ -2,8 +2,10 @@ import React from 'react'
 import classNames from 'classnames'
 import ReactDOM from 'react-dom'
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
+import { logoutUser } from './../actions'
 
-export default class Header extends React.Component {
+class Header extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -21,6 +23,8 @@ export default class Header extends React.Component {
   render() {
     let panelClass = classNames('nav-xs-panel', { active: this.state.navOpen })
     let panelOverlayClass = classNames('nav-xs-overlay', { active: this.state.navOpen })
+    let logInShow = classNames('ttu', { hidden: !this.props.loggedIn })
+    let logInHide = classNames('ttu', { hidden: this.props.loggedIn })
 
     return (
       <div id="header">
@@ -32,15 +36,23 @@ export default class Header extends React.Component {
             <nav class="pull-right fwb fz12 visible-lg">
               <Link to="/about" class="ttu">
                 About
+                <span class="mr5 ml5 fwn">|</span>
               </Link>
-              <span class="mr5 ml5 fwn">|</span>
-              <Link to="/sign-in" class="ttu">
+              <Link to="/sign-in" class={logInHide}>
                 SIGN IN
+                <span class="mr5 ml5 fwn">|</span>
               </Link>
-              <span class="mr5 ml5 fwn">|</span>
-              <Link to="/sign-up" class="ttu">
+              <Link to="/sign-up" class={logInHide}>
                 REGISTER
               </Link>
+              {
+                this.props.loggedIn
+                  ? <a class={logInShow}>Hello, {this.props.user.username}<span class="mr5 ml5 fwn">|</span></a>
+                  : ''
+              }
+              <a class={logInShow} onClick={this.props.logout.bind(this)}>
+                Log Out
+              </a>
             </nav>
             <nav class="pull-right hidden-lg">
               <div class="nav-xs-trigger" onClick={this.toggleNav}>
@@ -58,3 +70,18 @@ export default class Header extends React.Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.accounts.user,
+    loggedIn: state.accounts.loggedIn
+  }
+}
+
+function dispatchToProps(dispatch) {
+  return {
+    logout: () => dispatch(logoutUser())
+  }
+}
+
+export default connect(mapStateToProps, dispatchToProps)(Header)
