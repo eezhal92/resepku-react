@@ -16,6 +16,18 @@ export default function () {
             <p>Lorem ipsum sit amte</p>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-3 col-md-offset-2 text-center">
+            <img src="https://avatars1.githubusercontent.com/u/3829182?v=3&s=220" class="img img-circle"/>
+            <h3>appai</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem et in quisquam. Ad alias aperiam assumenda aut deserunt dolores earum fugiat, labore laudantium maiores minus, numquam omnis pariatur soluta vel.</p>
+          </div>
+          <div class="col-md-3 col-offset-2 text-center">
+            <img src="https://avatars2.githubusercontent.com/u/7058456?v=3&s=220" class="img img-circle"/>
+            <h3>eezhal92</h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem et in quisquam. Ad alias aperiam assumenda aut deserunt dolores earum fugiat, labore laudantium maiores minus, numquam omnis pariatur soluta vel.</p>
+          </div>
+        </div>
       </div>
     </GeneralLayout>
   )
